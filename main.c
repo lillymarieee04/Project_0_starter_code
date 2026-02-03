@@ -102,12 +102,17 @@ bool get_user_preference() {
     char buffer[256] = "";          /* read from the keyboard */
     int selection = 0;              /* user's choice */
     /* print a menu for the 2 options */
-    printf("Make a simple menu here.  Enter stuff: ");  // you should edit this line
+    printf("Choose program mode:\n");
+    printf("1 - Run vulnerable version\n");
+    printf("Any other number - Run more secure version\n");
+    printf("Enter your choice: ");
     /* read input from keyboard using fgets() and sscanf() with %d */
     fgets(buffer, sizeof(buffer), stdin);
     sscanf(buffer, "%d", &selection);
-    /* if they entered 1, return true */
-    /* if they entered anything else, return false (default option is secure) */
+    if (selection == 1) {
+        return true;
+    }
+    /* otherwise, return false (default option is secure) */
     return false; // you will edit this line, too
 }
 
