@@ -57,8 +57,8 @@ int main(void) {
     /******* does the user want to run vulnerable code? *******/
     vulnerable_mode = get_user_preference();
 
-    /* TODO:  Write this part */
-    /******* loop so that we have a chance to do fun things *******/
+    while (true) {
+
         /* print out this information (info leak, but helps us learn) */
         for (i = 0; i < num_users; i++) {
             print_this_user_info(i, user_data.user_name[i],
@@ -67,17 +67,39 @@ int main(void) {
         printf("-------------\n");
 
         /******* Execute vulnerable code, or not, depending on user choice *******/
-        /* if the user chose to live dangerously and run vulnerable functions */
-            /* prompt user for which user they want to work with, using get_user_to_modify_vulnerable() */
-            /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
-            /* change the pin using the function, change_pin_vulnerable */
-        /* otherwise, if the user did not want to risk it, and chose to run the more secure functions */
-            /* prompt user for which user they want to work with, using get_user_to_modify_more_secure() */
-            /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
-            /* change the pin using the function, change_pin_more_secure */
-    /* end of loop */
+        if (vulnerable_mode) {
 
-    /* exit program */
+            /* prompt user for which user they want to work with */
+            user_index = get_user_to_modify_vulnerable();
+
+            /* prompt user for new PIN */
+            printf("Enter new PIN: ");
+            fgets(buffer, sizeof(buffer), stdin);
+            sscanf(buffer, "%d", &new_pin);
+
+            /* change the pin using the vulnerable function */
+            change_pin_vulnerable(user_index, user_data.user_pin, new_pin);
+        }
+        else {
+
+            /* prompt user for which user they want to work with */
+            user_index = get_user_to_modify_more_secure(num_users);
+
+            /* prompt user for new PIN */
+            printf("Enter new PIN: ");
+            fgets(buffer, sizeof(buffer), stdin);
+            sscanf(buffer, "%d", &new_pin);
+
+            /* change the pin using the secure function */
+            success = change_pin_more_secure(user_index,
+                                             user_data.user_pin,
+                                             new_pin);
+
+            if (!success) {
+                printf("PIN change failed.\n");
+            }
+        }
+    }
     return 0;
 }
 
@@ -131,7 +153,7 @@ int get_user_to_modify_vulnerable(void) {
         exit(0);
     }
 
-    return -1;  // you will edit this line, too
+    return desired_index;
 }
 
 /* TODO:  WRITE THIS FUNCTION */
@@ -143,7 +165,8 @@ int get_user_to_modify_vulnerable(void) {
  * Returns: nothing, but may have some vulnerabilities */
 void change_pin_vulnerable(int user_i, unsigned short u_pin[], int new_pin) {
     /* TODO: modify the desired u_pin, which can be done on one line. */
-    // does not return a value, so no return statement needed
+    u_pin[user_i] = new_pin;
+
 }
 
 /* TODO:  WRITE THIS FUNCTION */
