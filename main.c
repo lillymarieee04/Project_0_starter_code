@@ -123,10 +123,14 @@ bool get_user_preference() {
 int get_user_to_modify_vulnerable(void) {
     char buffer[256] = "";          /* read from the keyboard */
     int  desired_index = 0;         /* index of user to modify */
-    /* prompt the user to enter the desired index */
-    /* read input from keyboard using fgets() and sscanf() with %d */
-    /* quit program if desired */
-    /* otherwise, return the result */
+    printf("Enter user index to modify (%d to quit): ", EXIT_VALUE);
+    fgets(buffer, sizeof(buffer), stdin);
+    sscanf(buffer, "%d", &desired_index);
+
+    if (desired_index == EXIT_VALUE) {
+        exit(0);
+    }
+
     return -1;  // you will edit this line, too
 }
 
